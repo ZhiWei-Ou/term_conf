@@ -439,9 +439,20 @@ if-shell '! command -v pbcopy >/dev/null 2>&1 && ! command -v clip.exe >/dev/nul
   'set -s copy-command "xclip -selection clipboard >/dev/null"; set -s set-clipboard off'
 if-shell '! command -v pbcopy >/dev/null 2>&1 && ! command -v clip.exe >/dev/null 2>&1 && ! command -v wl-copy >/dev/null 2>&1 && ! command -v xclip >/dev/null 2>&1 && command -v xsel >/dev/null 2>&1' \
   'set -s copy-command "xsel --clipboard --input"; set -s set-clipboard off'
-bind -T copy-mode-vi y send -X copy-pipe-and-cancel
-# Clear the selection without leaving copy mode or losing the scroll position.
+# Copy and clear the selection while keeping the current scroll position.
+bind -T copy-mode-vi y send -X copy-pipe
+bind -T copy-mode-vi Enter send -X copy-pipe
+bind -T copy-mode-vi C-j send -X copy-pipe
+bind -T copy-mode-vi A send -X append-selection
+bind -T copy-mode-vi D send -X copy-pipe-end-of-line
+bind -T copy-mode-vi MouseDragEnd1Pane send -X copy-pipe
+bind -T copy-mode-vi DoubleClick1Pane select-pane \; send -X select-word \; run-shell -d 0.3 \; send -X copy-pipe
+bind -T copy-mode-vi TripleClick1Pane select-pane \; send -X select-line \; run-shell -d 0.3 \; send -X copy-pipe
+# Only q exits copy mode; disable the direct jump to the history bottom.
 bind -T copy-mode-vi Escape send -X clear-selection
+bind -T copy-mode-vi C-c send -X clear-selection
+bind -T copy-mode-vi q send -X cancel
+unbind -T copy-mode-vi G
 
 # Undercurl
 set -g default-terminal '${TERM}'
