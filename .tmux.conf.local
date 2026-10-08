@@ -440,6 +440,8 @@ if-shell '! command -v pbcopy >/dev/null 2>&1 && ! command -v clip.exe >/dev/nul
 if-shell '! command -v pbcopy >/dev/null 2>&1 && ! command -v clip.exe >/dev/null 2>&1 && ! command -v wl-copy >/dev/null 2>&1 && ! command -v xclip >/dev/null 2>&1 && command -v xsel >/dev/null 2>&1' \
   'set -s copy-command "xsel --clipboard --input"; set -s set-clipboard off'
 bind -T copy-mode-vi y send -X copy-pipe-and-cancel
+# Clear the selection without leaving copy mode or losing the scroll position.
+bind -T copy-mode-vi Escape send -X clear-selection
 
 # Undercurl
 set -g default-terminal '${TERM}'
