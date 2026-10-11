@@ -34,7 +34,7 @@
 
 - 🎨 **Matching Zsh and tmux colors** — warm orange accents, muted labels, and terminal-default backgrounds.
 - 📁 **Directory-based window names** — labels follow the active pane's directory basename; home appears as `~`. The current window has a rounded tab.
-- 📡 **Network monitoring** — download and upload rates in the status bar; click to see the interface, IP addresses, and traffic totals.
+- 📡 **Optional network monitoring** — enable download and upload rates in the status bar; click to see the interface, IP addresses, and traffic totals. [Disabled by default](#network-monitoring).
 - 📅 **Calendar and world clocks** — click the date or time to open a card, then click outside to close it.
 - 🪟 **Floating terminal** — toggle a reusable terminal with `Ctrl+backtick`.
 - 🐠 **Terminal aquarium** — fish turn and follow each other, bubbles rise, and foreground plants sway; press any key to return.
@@ -87,7 +87,7 @@ Start a tmux session from a terminal where Zsh is configured as the default shel
 tmux new-session -s dev
 ```
 
-You should see directory-based window labels and the clock at the bottom. At **120 columns or wider**, all three status cards can be shown when network statistics are available.
+You should see directory-based window labels and the clock at the bottom. At **120 columns or wider**, all three status cards can be shown when network monitoring is enabled and network statistics are available.
 
 <a name="usage"></a>
 
@@ -109,7 +109,7 @@ Mouse support is enabled by default. With tmux 3.4+, click a status label to ope
 
 Click outside a card or its heading, or press `Esc` or `q`, to close it.
 
-The status bar refreshes every two seconds. Network rates appear at **80 columns or wider**, and the date at **120 columns or wider**; the clock remains visible. Calendar and world-clock cards refresh in the background when the minute changes, with updates appearing after the next status refresh. World clocks account for daylight saving time and use shorter dates below 44 columns.
+The status bar refreshes every two seconds. When enabled, network rates appear at **80 columns or wider**, and the date at **120 columns or wider**; the clock remains visible. Calendar and world-clock cards refresh in the background when the minute changes, with updates appearing after the next status refresh. World clocks account for daylight saving time and use shorter dates below 44 columns.
 
 Network details read fresh counters when opened and use the status bar's recent sample to calculate rates. The card is a snapshot. Rates may be unavailable briefly after an interface change or counter reset; cumulative totals come from system counters and can reset with the interface or system.
 
@@ -193,6 +193,37 @@ Reload shell settings from Zsh, or reload tmux in a running session:
 source ~/.zshrc
 tmux source-file ~/.tmux.conf
 ```
+
+### Network monitoring
+
+Network monitoring is disabled by default. In `.tmux.conf.local`, this override appears immediately before `tmux_conf_theme_status_right`:
+
+```sh
+# Disable the network label and sampling. Comment out this line to enable both.
+tmux_conf_theme_status_network=""
+```
+
+An empty value removes the network label and its sampling command from the status bar, stopping periodic network sampling. A sample already running may take about one second to finish. The battery, date, and clock remain available.
+
+To enable network monitoring, comment out the empty-value override:
+
+```sh
+# tmux_conf_theme_status_network=""
+```
+
+Uncomment it to disable monitoring again. After either change, press `Prefix` then `r`, or run:
+
+```sh
+tmux source-file ~/.tmux.conf
+```
+
+With network monitoring enabled (`assets/status-with-network.png`):
+
+![Status bar with battery, network rates, date, and time](assets/status-with-network.png)
+
+Without network monitoring (default, `assets/status-without-network.png`):
+
+![Status bar with battery, date, and time](assets/status-without-network.png)
 
 ### Custom completions
 

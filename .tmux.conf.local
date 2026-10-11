@@ -296,6 +296,8 @@ tmux_conf_theme_status_battery="#{?battery_percentage,#[norange] #[fg=$tmux_conf
 tmux_conf_theme_status_date="#[norange] #[range=user|calendar]#[fg=$tmux_conf_theme_colour_2 bg=default]#[fg=$tmux_conf_theme_colour_4 bg=$tmux_conf_theme_colour_2 bold] %m-%d #[fg=$tmux_conf_theme_colour_2 bg=default nobold range=right]#[fg=$tmux_conf_theme_colour_3 bg=default]"
 tmux_conf_theme_status_time="#[norange] #[range=user|timezones]#[fg=$tmux_conf_theme_colour_2 bg=default]#[fg=$tmux_conf_theme_colour_4 bg=$tmux_conf_theme_colour_2 bold] %R #[fg=$tmux_conf_theme_colour_2 bg=default nobold range=right]"
 %endif
+# Disable the network label and sampling. Comment out this line to enable both.
+tmux_conf_theme_status_network=""
 # Keep the clock visible; hide network speed and the date on narrow terminals.
 tmux_conf_theme_status_right="$tmux_conf_theme_status_clock_menus #{prefix}#{pairing}#{synchronized}#{root}$tmux_conf_theme_status_battery#{?#{e|>=:#{client_width},80},$tmux_conf_theme_status_network,}#{?#{e|>=:#{client_width},120},$tmux_conf_theme_status_date,}$tmux_conf_theme_status_time "
 
