@@ -121,6 +121,7 @@ The prefix is **`Ctrl+b`**: press it, release it, then press the next key.
 | --- | --- |
 | `Prefix` then `c` | Create a window. |
 | `Prefix` then `1`–`9` | Switch to a window by number. |
+| `Prefix` then `Ctrl+h` / `Ctrl+l` | Swap the current window left/right and follow it. |
 | `Prefix` then `-` / `_` | Split into top/bottom or left/right panes. |
 | `Prefix` then `h` / `j` / `k` / `l` | Move between panes. |
 | `Prefix` then `m` | Toggle mouse support. |
