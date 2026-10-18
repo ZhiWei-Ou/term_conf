@@ -107,7 +107,7 @@ tmux_conf_theme_colour_12="#8a8178"   # muted
 tmux_conf_theme_colour_13="#d8d0c8"   # text
 tmux_conf_theme_colour_14="#080808"   # base
 tmux_conf_theme_colour_15="#080808"   # base
-tmux_conf_theme_colour_16="#ff9b72"   # accent
+tmux_conf_theme_colour_16="#e06c75"   # red
 tmux_conf_theme_colour_17="#d8d0c8"   # text
 
 # default theme (ansi)
@@ -147,7 +147,7 @@ tmux_conf_theme_focused_pane_bg="$tmux_conf_theme_colour_2"
 tmux_conf_theme_pane_border_style=thin
 
 # pane borders colours:
-tmux_conf_theme_pane_border="$tmux_conf_theme_colour_2"
+tmux_conf_theme_pane_border="#3a3633"
 tmux_conf_theme_pane_active_border="$tmux_conf_theme_colour_4"
 %if #{>=:#{version},3.2}
 tmux_conf_theme_pane_active_border="#{?pane_in_mode,$tmux_conf_theme_colour_9,#{?synchronize-panes,$tmux_conf_theme_colour_16,$tmux_conf_theme_colour_4}}"
