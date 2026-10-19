@@ -9,7 +9,7 @@
 
 # -- bindings ------------------------------------------------------------------
 set -g status on
-set -g status-interval 2
+set -g status-interval 10
 
 # preserve tmux stock bindings,
 # while adding bindings that don't conflict with these stock bindings
