@@ -84,6 +84,30 @@ case "$(uname)" in
 esac
 # <<<<
 
+# Record the typed command for tmux window names, since wrappers such as
+# node (codex) or versioned binaries (claude) hide the real program name
+# >>>>
+if [ -n "$TMUX" ]; then
+    autoload -Uz add-zsh-hook
+    tmux_command_preexec() {
+        local words=(${(z)2})
+        while [[ ${words[1]} == *=* ]]; do
+            shift words
+        done
+        tmux set-option -p -t "$TMUX_PANE" @command "${words[1]:t}" 2>/dev/null
+        tmux_command_set=1
+    }
+    tmux_command_precmd() {
+        if [ -n "$tmux_command_set" ]; then
+            tmux set-option -pu -t "$TMUX_PANE" @command 2>/dev/null
+            unset tmux_command_set
+        fi
+    }
+    add-zsh-hook preexec tmux_command_preexec
+    add-zsh-hook precmd tmux_command_precmd
+fi
+# <<<<
+
 # Source custom .workrc/rc.local
 # >>>>
 workrc="$HOME/.workrc/rc.local"

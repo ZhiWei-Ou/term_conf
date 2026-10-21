@@ -33,7 +33,7 @@
 ## ✨ Features
 
 - 🎨 **Matching Zsh and tmux colors** — warm orange accents, muted labels, and terminal-default backgrounds.
-- 📁 **Directory-based window names** — labels follow the active pane's directory basename; home appears as `~`. The current window has a rounded tab.
+- 📁 **Directory-based window names** — labels follow the active pane's directory basename; home appears as `~`, and non-shell programs append `@command` (e.g. `term_conf@nvim`). The current window has a rounded tab.
 - 📡 **Optional network monitoring** — enable download and upload rates in the status bar; click to see the interface, IP addresses, and traffic totals. [Disabled by default](#network-monitoring).
 - 📅 **Calendar and world clocks** — click the date or time to open a card, then click outside to close it.
 - 🪟 **Floating terminal** — toggle a reusable terminal with `Ctrl+backtick`.
@@ -178,7 +178,7 @@ setup.bat /path/to/home
 
 Keep tmux customizations in `.tmux.conf.local`. Colors use the existing `tmux_conf_theme_colour_*` settings; the main accent is `#ff9b72`.
 
-Automatic window names follow the active pane's directory, so `~/.config/term_conf` appears as `term_conf` and your home directory as `~`. Manually renamed windows retain their names.
+Automatic window names follow the active pane's directory, so `~/.config/term_conf` appears as `term_conf` and your home directory as `~`. When the foreground process is not a shell, its name is appended, such as `term_conf@nvim`. For programs that run through node (Codex) or as version-named binaries (Claude Code), a Zsh hook records the typed command so the window shows `term_conf@codex` or `term_conf@claude`. Manually renamed windows retain their names.
 
 For personal shell settings, edit `~/.workrc/rc.local`, for example:
 

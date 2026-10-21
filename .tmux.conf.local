@@ -36,8 +36,10 @@ tmux_conf_new_session_retain_current_path=false
 
 # -- windows & pane creation ---------------------------------------------------
 
-# Use the directory basename for automatic window names, or ~ at home.
-setw -g automatic-rename-format '#{?#{==:#{pane_current_path},#{HOME}},~,#{b:pane_current_path}}'
+# Use the directory basename for automatic window names, or ~ at home,
+# followed by @command when the foreground process is not a shell. For node and
+# version-named binaries, use the command name recorded by the .zshrc hook.
+setw -g automatic-rename-format '#{?#{==:#{pane_current_path},#{HOME}},~,#{b:pane_current_path}}#{?#{m/r:^(-?zsh|bash|sh|fish)$,#{pane_current_command}},,@#{?#{&&:#{m/r:^(node|[0-9.]+)$,#{pane_current_command}},#{@command}},#{@command},#{pane_current_command}}}'
 setw -g automatic-rename on
 
 # new window retains current path, possible values are:
