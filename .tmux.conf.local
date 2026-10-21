@@ -523,11 +523,44 @@ run-shell "cut -c3- '$TMUX_CONF_LOCAL' | sh -s _bind_status_clicks"
 set -s extended-keys on
 %endif
 # The popup border frames the scratch session, so hide its status line.
+# The title shows the current scratch window and the window count.
+set -g @scratch_popup_title '#[align=centre] scratch (#{window_index}/#{session_windows}) '
 bind-key -n 'C-`' if-shell -F '#{==:#{session_name},scratch}' {
   detach-client
 } {
+  set -gF @scratch_popup_client '#{client_name}'
+%if #{>=:#{version},3.3}
+  # A new scratch session starts with one window.
+  display-popup -E -b rounded -S "fg=#ff9b72,bg=default" -T "#{?#{S:#{?#{==:#{session_name},scratch},1,}},#{S:#{?#{==:#{session_name},scratch},#{E:@scratch_popup_title},}},#[align=centre] scratch (1/1) }" -w 80% -h 80% -d "#{pane_current_path}" "tmux -T extkeys -f ~/.tmux.conf new-session -A -s scratch ';' set-option status off"
+%else
   display-popup -E -b rounded -S "fg=#ff9b72,bg=default" -w 80% -h 80% -d "#{pane_current_path}" "tmux -T extkeys -f ~/.tmux.conf new-session -A -s scratch ';' set-option status off"
+%endif
 }
+%if #{>=:#{version},3.6}
+# Retitle the open popup in place; display-popup on a client with a popup only
+# modifies it. Forget the client when either side detaches so no hook opens a
+# new popup.
+set-hook -g session-window-changed[90] {
+  if-shell -F '#{&&:#{==:#{session_name},scratch},#{@scratch_popup_client}}' {
+    run-shell -C 'display-popup -c "#{@scratch_popup_client}" -T "#{E:@scratch_popup_title}"'
+  }
+}
+set-hook -g window-linked[90] {
+  if-shell -F '#{&&:#{==:#{session_name},scratch},#{@scratch_popup_client}}' {
+    run-shell -C 'display-popup -c "#{@scratch_popup_client}" -T "#{E:@scratch_popup_title}"'
+  }
+}
+set-hook -g window-unlinked[90] {
+  if-shell -F '#{&&:#{==:#{session_name},scratch},#{@scratch_popup_client}}' {
+    run-shell -C 'display-popup -c "#{@scratch_popup_client}" -T "#{E:@scratch_popup_title}"'
+  }
+}
+set-hook -g client-detached[90] {
+  if-shell -F '#{||:#{==:#{session_name},scratch},#{==:#{client_name},#{@scratch_popup_client}}}' {
+    set -gu @scratch_popup_client
+  }
+}
+%endif
 
 # Aquarium in the current pane; night sky in a terminal-wide popup.
 %if #{>=:#{version},3.3}

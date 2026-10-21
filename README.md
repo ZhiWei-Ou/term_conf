@@ -129,7 +129,7 @@ The prefix is **`Ctrl+b`**: press it, release it, then press the next key.
 | `Prefix` then `t` | Show the aquarium in the current pane; any key closes it. |
 | `Prefix` then `T` (`Shift+t`) | Open the night sky screensaver; any key closes it. |
 | `Prefix` then `d` | Detach while keeping the session running. |
-| `Ctrl+backtick` | Open or close the floating terminal without a prefix. It reuses the `scratch` session and hides its status line. |
+| `Ctrl+backtick` | Open or close the floating terminal without a prefix. It reuses the `scratch` session, hides its status line, and shows the current window and window count, such as `scratch (2/3)`, in the centered border title on tmux 3.3+; tmux 3.6+ updates it as windows change. |
 
 The aquarium requires tmux 3.3+ and replaces the current pane's display while its original program keeps running. Other panes remain visible and continue refreshing. On exit, the original pane, program, and layout return. The night sky opens in a terminal-wide popup on tmux 3.2+. Both animations use the existing Perl dependency, adapt to terminal resizing, and consume the key used to dismiss them. They open only from their shortcuts; there is no automatic idle timer. The aquarium replaces the built-in clock shortcut.
 
