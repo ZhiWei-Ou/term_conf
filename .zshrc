@@ -96,11 +96,17 @@ if [ -n "$TMUX" ]; then
         done
         tmux set-option -p -t "$TMUX_PANE" @command "${words[1]:t}" 2>/dev/null
         tmux_command_set=1
+        tmux_command_start=$SECONDS
     }
     tmux_command_precmd() {
         if [ -n "$tmux_command_set" ]; then
             tmux set-option -pu -t "$TMUX_PANE" @command 2>/dev/null
             unset tmux_command_set
+            # Ring the bell after long scratch commands so the status line can flag them
+            if (( SECONDS - tmux_command_start >= ${TMUX_SCRATCH_BELL_SECONDS:-10} )) &&
+                [[ $(tmux display-message -p -t "$TMUX_PANE" '#{session_name}' 2>/dev/null) == scratch ]]; then
+                printf '\a'
+            fi
         fi
     }
     add-zsh-hook preexec tmux_command_preexec
